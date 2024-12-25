@@ -7,7 +7,7 @@ import time
 import requests
 import json
 
-st.info("use your dummy account 🙂")
+st.info("By: IshaanShares")
 def Execute(cookie, post, share_count, delay):
 	head = {
 		'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
@@ -113,58 +113,62 @@ def conver_to_puke(user, passw):
 		return {"a":False,"b": f'{ed}'}
 #----------------------------#
 COOKIEm, APPSTATEm, LOGINm = st.tabs(["Cookie", "Appstate", "Login"])
+
+# For Cookie tab
 with COOKIEm:
-	COOKIE = st.text_area("Cookie",key='a1')
-	POST = st.text_input("Post link",key='a2')
-	COUNT = st.number_input("Count", min_value=1, max_value=50000,key='a3')
-	DELAY = st.number_input("Delay", min_value=0, max_value=50000,key='a4')
-	if st.button("Submit", type='primary',key="aa1"):
-		if not COOKIE or not POST or not COUNT:
-			st.error("Missing inputs value")
-		elif 'c_user' not in COOKIE:
-			st.error("Invalid cookie")
-#		elif not cCheck(COOKIE):
-#			st.error("Cookie Die")
-		elif not POST.startswith('https://www.facebook.com/'):
-			st.error("Invalid post link")
-		else:
-			with st.container(border=True):
-				i = Execute(COOKIE, POST, int(COUNT), int(DELAY))
+    COOKIE = st.text_area("Cookie", key='a1')
+    POST = st.text_input("Post link", key='a2')
+    COUNT = st.number_input("Count", min_value=1, max_value=1000000, key='a3')
+    DELAY = st.number_input("Delay", min_value=0.5, max_value=60.0, step=0.1, key='a4')
+    if st.button("Submit", type='primary', key="aa1"):
+        if not COOKIE or not POST or not COUNT:
+            st.error("Missing inputs value")
+        elif 'c_user' not in COOKIE:
+            st.error("Invalid cookie")
+        elif not POST.startswith('https://www.facebook.com/'):
+            st.error("Invalid post link")
+        else:
+            with st.container(border=True):
+                i = Execute(COOKIE, POST, int(COUNT), float(DELAY))
+
+# For Appstate tab
 with APPSTATEm:
-	APPSTATE = st.text_area("Appstate",key='b1')
-	POST = st.text_input("Post link",key='b2')
-	COUNT = st.number_input("Count", min_value=1, max_value=50000,key='b3')
-	DELAY = st.number_input("Delay", min_value=0, max_value=50000,key='b4')
-	if st.button("Submit", type='primary',key='bb1'):
-		if not APPSTATE or not POST or not COUNT:
-			st.error("Missing inputs value")
-		elif not POST.startswith('https://www.facebook.com/'):
-			st.error("Invalid post link")
-		else:
-			with st.container(border=True):
-				try:
-					_k = json.loads(APPSTATE)
-					__cookie = []
-					for k in _k:
-						__cookie.append(f'{k["key"]}={k["value"]};')
-					Cow = ''.join(__cookie)
-					b = Execute(Cow, POST, int(COUNT), int(DELAY))
-				except Exception as vjh:
-					st.error(vjh)
+    APPSTATE = st.text_area("Appstate", key='b1')
+    POST = st.text_input("Post link", key='b2')
+    COUNT = st.number_input("Count", min_value=1, max_value=1000000, key='b3')
+    DELAY = st.number_input("Delay", min_value=0.5, max_value=60.0, step=0.1, key='b4')
+    if st.button("Submit", type='primary', key='bb1'):
+        if not APPSTATE or not POST or not COUNT:
+            st.error("Missing inputs value")
+        elif not POST.startswith('https://www.facebook.com/'):
+            st.error("Invalid post link")
+        else:
+            with st.container(border=True):
+                try:
+                    _k = json.loads(APPSTATE)
+                    __cookie = []
+                    for k in _k:
+                        __cookie.append(f'{k["key"]}={k["value"]};')
+                    _Cow_ = ''.join(__cookie)
+                    b = Execute(_Cow_, POST, int(COUNT), float(DELAY))
+                except Exception as vjh:
+                    st.error(vjh)
+
+# For Login tab
 with LOGINm:
-	_login = st.container(border=True)
-	username = _login.text_input("Username")
-	password = _login.text_input("Password", type='password')
-	POST = st.text_input("Post link",key='c2')
-	COUNT = st.number_input("Count", min_value=1, max_value=50000,key='c3')
-	DELAY = st.number_input("Delay", min_value=0, max_value=50000,key='c4')
-	if st.button("Submit", type='primary', key='cc1'):
-		if not username or not password or not POST:
-			st.error("Missing inputs value")
-		else:
-			with st.container(border=True):
-				v = conver_to_puke(username, password)
-				if v['a']:
-					tite = Execute(v['b'], POST, int(COUNT), int(DELAY))
-				else:
-					st.error(v['b'])
+    _login = st.container(border=True)
+    username = _login.text_input("Username")
+    password = _login.text_input("Password", type='password')
+    POST = st.text_input("Post link", key='c2')
+    COUNT = st.number_input("Count", min_value=1, max_value=1000000, key='c3')
+    DELAY = st.number_input("Delay", min_value=0.5, max_value=60.0, step=0.1, key='c4')
+    if st.button("Submit", type='primary', key='cc1'):
+        if not username or not password or not POST:
+            st.error("Missing inputs value")
+        else:
+            with st.container(border=True):
+                v = conver_to_puke(username, password)
+                if v['a']:
+                    tite = Execute(v['b'], POST, int(COUNT), float(DELAY))
+                else:
+                    st.error(v['b'])
